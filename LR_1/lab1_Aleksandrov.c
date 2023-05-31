@@ -4,15 +4,12 @@
 #include <math.h>
 #include <time.h>
 
-// 2 Этап
-// Применение операции соответсвенно 4 варианту к массиву М1
 void func_map_m1(int sizeArrayM1, double M1[]) {
 	for (int k = 0; k < sizeArrayM1; k++) {
 		M1[k] = cosh(sqrt(M1[k]))/sinh(sqrt(M1[k]));
 	}
 }
-
-// Применение операции соответсвенно 2 варианту к массиву М2 
+ 
 void func_map_m2(int sizeArrayM2, double M2[]) {
 	double cloneArrayM2[sizeArrayM2];
 	for (int k = 0; k < sizeArrayM2; k++) {
@@ -28,16 +25,12 @@ void func_map_m2(int sizeArrayM2, double M2[]) {
 	}
 }
 
-// 3 Этап 
-// Merge согласно 6 варинту 
 void merge(double M1[], double M2[], int sizeArrayM2) {
 	for (int k = 0; k < sizeArrayM2; k++) {
 		M2[k] = fabsf(M1[k] - M2[k]);
 	}
 }
 
-// 4 Этап 
-// Сортировка stupid sort согласно 4 варианту
 int isSorted(double M2[], int sizeArrayM2)
 {
 	while (--sizeArrayM2 > 1)
@@ -65,9 +58,6 @@ void stupid_sort(double M2[], int sizeArrayM2)
 		shuffle(M2, sizeArrayM2);
 }
 
-
-// Этап reduce
-// ПРИХОДИТ ОТСОРТИРОВАННЫЙ МАССИВ!!!
 double reduce(double M2[], int sizeArrayM2) {
 	double amount = 0;
 	double min = 0;
@@ -106,7 +96,6 @@ int main(int argc, char* argv[]) {
 	unsigned int first_random = 0;
 	unsigned int second_random = 0;
 
-	// 100 экспериментов
 	for (int i = 0; i < 100; i++) {
 
 		srand(i);
@@ -114,34 +103,26 @@ int main(int argc, char* argv[]) {
 		double* M1 = (double*)malloc(N * sizeof(double));
 		double* M2 = (double*)malloc(N / 2 * sizeof(double));
 
-		// 1 Этап
-		// Заполение массива M1
 		for (int k = 0; k < N; k++) {
 			double value = 1 + rand_r(&first_random) % A;
 			M1[k] = value;
 			//printf("%.2f\n", value);
 		};
 
-		// Заполение массива M2
 		for (int k = 0; k < N / 2; k++) {
 			double value = 1 + rand_r(&second_random) % (A * 10);
 			M2[k] = value;
 			//printf("%.2f\n", value);
 		}
 
-		// 2 Этап
 		func_map_m1(N, M1);
 
 		func_map_m2(N / 2, M2);
-
-		// 3 Этап
+		
 		merge(M1, M2, N / 2);
 
-		// 4 Этап
 		//stupid_sort(M2, N / 2);
 
-
-		// 5 Этап
 		int result = reduce(M2, N / 2);
 
 		printf("Result: %d\n", result);
